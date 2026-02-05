@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>منافسات منصة اعتماد</title>
+
+  <style>
+    /* ====== Fonts (Almarai) ====== */
+    @font-face {
+      font-family: "Almarai";
+      src: url("Almarai-Light.ttf") format("truetype");
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Almarai";
+      src: url("Almarai-Bold.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* ====== Brand Colors ====== */
+    :root{
+      --green: #1d3c34;
+      --red: #e56a54;
+      --peach: #f7c4bb;
+      --bg: #0f2722;          /* خلفية قريبة من هوية الأخضر */
+      --card: rgba(255,255,255,.06);
+      --stroke: rgba(255,255,255,.12);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.70);
+      --shadow: 0 24px 70px rgba(0,0,0,.35);
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin: 0;
+      font-family: "Almarai", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(1200px 600px at 18% 18%, rgba(229,106,84,.22), transparent 55%),
+        radial-gradient(900px 500px at 85% 30%, rgba(247,196,187,.18), transparent 55%),
+        linear-gradient(180deg, var(--bg), #081a16 70%);
+      color: var(--text);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 28px 16px;
+    }
+
+    .wrap{
+      width: min(980px, 100%);
+    }
+
+    .card{
+      border: 1px solid var(--stroke);
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* زخرفة خفيفة */
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(900px 300px at 20% 0%, rgba(229,106,84,.22), transparent 60%);
+      pointer-events:none;
+    }
+
+    header{
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .brand{
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .logo{
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
+    .logo img{
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 8px;
+    }
+
+    .titles{
+      min-width: 0;
+    }
+    .company{
+      margin: 0;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: .2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .site{
+      margin: 6px 0 0;
+      font-weight: 700;
+      font-size: 28px;
+      color: #fff;
+      letter-spacing: .2px;
+    }
+
+    .dateBox{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      flex: 0 0 auto;
+    }
+
+    .dateChip{
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform .15s ease, border-color .2s ease, background .2s ease;
+    }
+    .dateChip:hover{
+      transform: translateY(-1px);
+      border-color: rgba(247,196,187,.55);
+      background: rgba(247,196,187,.10);
+    }
+
+    .dot{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--red);
+      box-shadow: 0 0 0 6px rgba(229,106,84,.18);
+      flex: 0 0 auto;
+    }
+
+    .dateText{
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+    .dayName{
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+    }
+    .fullDate{
+      font-weight: 300;
+      font-size: 13px;
+      color: var(--muted);
+      direction: rtl;
+    }
+
+    .hint{
+      position: relative;
+      margin: 14px 0 18px;
+      padding: 14px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: var(--muted);
+      line-height: 1.9;
+      text-align: center; /* ✅ تعديل: توسيط النص فقط */
+    }
+    .hint b{ color: #fff; font-weight: 700; }
+
+    .actions{
+      position: relative;
+      display: grid;
+      gap: 12px;
+      justify-items: center;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .btn{
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      width: min(420px, 100%);
+      padding: 14px 16px;
+      border-radius: 16px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: .2px;
+      color: #0b1512;
+      background: linear-gradient(135deg, var(--peach), #fff 120%);
+      box-shadow: 0 10px 28px rgba(0,0,0,.25);
+      position: relative;
+      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* توهج برتقالي عند المرور */
+    .btn::after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      border-radius: 18px;
+      background: radial-gradient(300px 120px at 50% 50%, rgba(229,106,84,.45), transparent 65%);
+      opacity: 0;
+      transition: opacity .25s ease;
+      z-index: -1;
+    }
+
+    .btn:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(0,0,0,.32);
+      filter: saturate(1.05);
+    }
+    .btn:hover::after{ opacity: 1; }
+
+    .btn.secondary{
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: none;
+    }
+    .btn.secondary:hover{
+      border-color: rgba(229,106,84,.55);
+      background: rgba(229,106,84,.10);
+    }
+
+    .footer{
+      position: relative;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      color: rgba(255,255,255,.65);
+      font-size: 13px;
+      text-align: center;
+      line-height: 1.8;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px){
+      header{
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .dateBox{ align-items: flex-start; }
+      .site{ font-size: 24px; }
+      .company{ font-size: 16px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <section class="card">
+      <header>
+        <div class="brand">
+          <div class="logo" title="AIME Training Center">
+            <img src="Aims Logo.png" alt="AIMS Logo" />
+          </div>
+          <div class="titles">
+            <p class="company">المركز العربي للإدارة والبيع</p>
+            <h1 class="site">منافسات منصة اعتماد</h1>
+          </div>
+        </div>
+
+        <!-- تاريخ اليوم (قابل للنقر) -->
+        <div class="dateBox">
+          <div id="dateChip" class="dateChip" title="اضغط لفتح منافسات اليوم">
+            <span class="dot"></span>
+            <div class="dateText">
+              <span id="dayName" class="dayName">—</span>
+              <span id="fullDate" class="fullDate">—</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="hint">
+عند النقر ستكون على <b>بعد خطوة واحدة</b> من المنافسات المرصودة لذات اليوم المتعلقة بالتعليم والتدريب
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="openBtn" type="button">
+          فتح المنافسات الآن
+        </button>
+
+        <button class="btn secondary" id="openBaseBtn" type="button">
+          فتح موقع منصة اعتماد
+        </button>
+      </div>
+
+      <div class="footer">
+        Created by Dr. Hayan Saffan | AIME Training Center | Copy Rights 2026-2027
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // رابط البحث الذي أرسلتيه (الرياض + التعليم والتدريب + نشطة)
+    const ETIMAD_URL =
+      "https://tenders.etimad.sa/Tender/AllTendersForVisitor?&MultipleSearch=&TenderCategory=2&TenderActivityId=12&ReferenceNumber=&TenderNumber=&agency=&ConditionaBookletRange=&PublishDateId=5&LastOfferPresentationDate=&LastOfferPresentationDate=&TenderAreasIdString=1&TenderTypeId=&TenderActivityId=12&TenderSubActivityId=&AgencyCode=&FromLastOfferPresentationDateString=&ToLastOfferPresentationDateString=&SortDirection=DESC&Sort=SubmitionDate&PageSize=6&IsSearch=true&ConditionaBookletRange=&PublishDateId=5&TenderCategory=&PageNumber=1";
+
+    // ✅ تعديل: فتح في نفس الصفحة (بدون تبويب جديد)
+    document.getElementById("openBtn").addEventListener("click", () => {
+      window.location.href = ETIMAD_URL;
+    });
+
+    // ✅ تعديل: زر المنصة يفتح portal.etimad.sa في نفس الصفحة
+    document.getElementById("openBaseBtn").addEventListener("click", () => {
+      window.location.href = "https://portal.etimad.sa/";
+    });
+
+    // عرض تاريخ اليوم + اسم اليوم (عربي)
+    const now = new Date();
+    const dayName = now.toLocaleDateString("ar-SA", { weekday: "long" });
+    const fullDate = now.toLocaleDateString("ar-SA", { year: "numeric", month: "long", day: "numeric" });
+
+    document.getElementById("dayName").textContent = dayName;
+    document.getElementById("fullDate").textContent = fullDate;
+
+    // ✅ تعديل: التاريخ يفتح في نفس الصفحة
+    document.getElementById("dateChip").addEventListener("click", () => {
+      window.location.href = ETIMAD_URL;
+    });
+  </script>
+</body>
+</html>
